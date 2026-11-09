@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kalkulator Quotation Swipi Ventures</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700&family=DM+Mono:wght@400;500&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#344C4B;--bone:#FFFFFF;--pg:#344C4B;--vi:#E5765C;--li:#8CBEBF;--co:#344C4B;
+--mi:var(--li);--mb:color-mix(in srgb,var(--ink) 82%,var(--bone));--rl:color-mix(in srgb,var(--ink) 30%,var(--bone));--sf:color-mix(in srgb,var(--bone) 12%,var(--pg));
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+html{background:var(--pg);scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--pg);color:var(--bone);font:400 16px/1.5 Figtree,system-ui,sans-serif;-webkit-text-size-adjust:100%}
+h1,h2,.pn,.big,.amt{font-family:"Bricolage Grotesque",Figtree,system-ui,sans-serif;letter-spacing:-.02em;margin:0}
+button,input{font:inherit;color:inherit}button{cursor:pointer}
+[hidden]{display:none!important}
+:focus-visible{outline:3px solid var(--li);outline-offset:2px}
+.paper :focus-visible,.paper:focus-visible{outline-color:var(--vi)}
+.skip{position:absolute;left:-999px}.skip:focus{left:16px;top:8px;background:var(--li);color:var(--ink);padding:8px 12px;border-radius:8px;z-index:9}
+.top{display:flex;align-items:center;justify-content:space-between;max-width:560px;margin:0 auto;padding:20px 20px 0}
+.brand{display:flex;align-items:center;gap:10px;font:700 18px "Bricolage Grotesque",Figtree,sans-serif}
+.brand svg{width:20px;height:28px;fill:var(--bone)}
+.yr{color:var(--mi);font-size:14px}
+main{max-width:560px;margin:0 auto;padding:36px 20px 150px}
+h1{font-size:clamp(34px,10vw,48px);line-height:1.05;font-weight:700}
+.lead{color:var(--mi);margin:12px 0 28px}
+.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.tabs button{min-height:48px;border:0;border-radius:12px;background:var(--sf);color:var(--bone);font-weight:600;font-size:15px;display:flex;align-items:center;justify-content:center;gap:6px}
+.tabs button[aria-selected="true"]{background:var(--vi);color:var(--ink)}
+.n{min-width:20px;height:20px;border-radius:10px;background:var(--li);color:var(--ink);font-size:12px;display:grid;place-items:center;padding:0 5px}
+.paper{margin-top:20px;background:var(--bone);color:var(--ink);padding:36px 22px 40px;font:400 14px/1.45 "DM Mono",ui-monospace,monospace;
+-webkit-mask:conic-gradient(from -45deg at bottom,#0000,#000 1deg 89deg,#0000 90deg) bottom/20px 51% repeat-x,conic-gradient(from 135deg at top,#0000,#000 1deg 89deg,#0000 90deg) top/20px 51% repeat-x;
+mask:conic-gradient(from -45deg at bottom,#0000,#000 1deg 89deg,#0000 90deg) bottom/20px 51% repeat-x,conic-gradient(from 135deg at top,#0000,#000 1deg 89deg,#0000 90deg) top/20px 51% repeat-x}
+.ph{text-align:center}.ph svg{width:20px;height:28px;fill:var(--ink)}
+.pn{font-size:26px;font-weight:700;margin-top:6px}
+.pd{font-size:13px;color:var(--mb);margin-top:2px}
+.dash{border-top:2px dashed var(--rl);margin:18px 0}
+.grp{margin-top:24px}
+.grp h2{font:500 13px "DM Mono",ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase;text-align:center}
+.grp h2::before,.grp h2::after{content:"***";margin:0 10px;color:var(--vi)}
+.note{color:var(--mb);font-size:13px;margin:8px 0 0;text-align:center}
+.row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 0;border-bottom:1px dashed var(--rl)}
+.nm{font-weight:500;font-size:14px}
+.pr{color:var(--mb);font-size:13px;margin-top:2px}
+.pr b{color:var(--ink);background:var(--li);padding:0 4px;font-weight:500}
+.step{display:flex;align-items:center;flex:none}
+.step button{width:40px;height:44px;border-radius:8px;border:1.5px solid var(--ink);background:none;color:var(--ink);font-size:20px;line-height:1}
+.step button[data-d="1"]{background:var(--vi);border-color:var(--vi);color:var(--ink)}
+.step output{min-width:34px;text-align:center;font-weight:500;font-size:16px}
+.pk{margin-top:16px;border:1.5px dashed var(--ink);border-radius:10px;padding:16px}
+.pk.on{border-style:solid;background:var(--li)}
+.pk label{display:flex;gap:12px;align-items:flex-start;cursor:pointer;min-height:44px}
+.pk input{width:22px;height:22px;margin:2px 0 0;accent-color:var(--ink);flex:none}
+.pk .t{font:700 20px "Bricolage Grotesque",Figtree,sans-serif;display:block}
+.pk .pp{color:var(--mb);display:block;font-size:13px}.pk.on .pp{color:var(--ink)}
+details{margin-top:6px}
+summary{min-height:44px;display:flex;align-items:center;font-size:13px;cursor:pointer}
+details ul{margin:0 0 4px;padding-left:18px;font-size:13px}details li{padding:2px 0}
+.txt{background:none;border:0;text-decoration:underline;min-height:44px;padding:0;color:var(--ink)}
+.f{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:20px}
+.f label{display:block;font-size:13px;color:var(--mb);margin-bottom:2px}
+.f input{width:100%;min-height:52px;border:0;border-bottom:2px solid var(--ink);border-radius:0;background:none;padding:0 4px;font:500 20px "DM Mono",ui-monospace,monospace}
+.f input:focus{outline:none;background:var(--li)}
+.hint{color:var(--mb);font-size:13px;margin:10px 0 0}
+.err{background:var(--ink);color:var(--bone);font-size:13px;margin:10px 0 0;padding:6px 10px;border-radius:6px}
+.res{margin-top:20px;padding:18px;border:1.5px dashed var(--ink);border-radius:10px;text-align:center}
+.big{font-size:44px;font-weight:700;line-height:1}
+.res p{margin:8px 0 0;color:var(--mb)}.res p b{color:var(--ink)}
+.tiers{list-style:none;margin:12px 0 0;padding:0}
+.tiers li{display:flex;justify-content:space-between;gap:12px;padding:8px 6px;font-size:13px}
+.tiers li.act{background:var(--li);font-weight:500}
+.thx{text-align:center;color:var(--mb);font-size:13px;margin:0}
+.bc{height:44px;width:72%;margin:18px auto 0;background:repeating-linear-gradient(90deg,var(--ink) 0 2px,transparent 2px 4px,var(--ink) 4px 5px,transparent 5px 9px,var(--ink) 9px 12px,transparent 12px 14px)}
+.ct{margin-top:40px;padding:28px 24px 8px;border-radius:20px;background:var(--vi);color:var(--bone)}
+.ct h2{font-size:26px;line-height:1.1;max-width:12ch}
+.ct p{margin:10px 0 20px;font-size:15px;max-width:30ch}
+.ct a{display:flex;align-items:center;gap:16px;min-height:76px;color:inherit;text-decoration:none;border-top:1px solid color-mix(in srgb,var(--bone) 35%,var(--vi))}
+.ci{width:44px;height:44px;border-radius:50%;background:var(--li);color:var(--ink);display:grid;place-items:center;flex:none}
+.ci svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.ct small{display:block;font-size:13px}.ct b{font-weight:600;font-size:17px;word-break:break-all}
+.bar{position:fixed;left:0;right:0;bottom:0;background:var(--pg);border-top:1px solid var(--sf);padding:12px 20px calc(12px + env(safe-area-inset-bottom,0px))}
+.bar>div{max-width:560px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.lbl{font-size:13px;color:var(--mi);display:block}
+.amt{font-size:26px;font-weight:700;color:var(--li)}
+.btn{min-height:48px;padding:0 22px;border-radius:12px;border:0;background:var(--vi);color:var(--ink);font-weight:600;text-decoration:none;display:inline-grid;place-items:center}
+.btn.l{background:var(--vi);color:var(--ink)}.btn.g{background:var(--sf);color:var(--bone)}.btn.c{background:var(--bone);color:var(--ink)}
+.btn:disabled{opacity:.45;cursor:not-allowed}.btn[aria-disabled=true]{opacity:.45;pointer-events:none}
+dialog{border:0;padding:16px;margin:auto auto 0;width:min(560px,100%);max-height:92vh;background:var(--pg);color:var(--bone);border-radius:24px 24px 0 0}
+dialog::backdrop{background:rgba(20,32,31,.7)}
+.dh{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}.dh b{font:700 20px "Bricolage Grotesque",Figtree,sans-serif}
+dialog .paper{margin-top:8px}
+.lb{display:block;font-size:13px;color:var(--mb);margin-top:18px}
+.nmi{width:100%;min-height:48px;border:0;border-bottom:2px solid var(--ink);background:none;border-radius:0;padding:0 4px;font:500 16px "DM Mono",ui-monospace,monospace;color:var(--ink)}
+.nmi:focus{outline:none;background:var(--li)}
+.ln{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px dashed var(--rl)}
+.ln small{display:block;color:var(--mb);font-size:12px}
+.ln>span{white-space:nowrap;font-weight:500}
+.tg{background:var(--ink);color:var(--bone);font-style:normal;font-size:12px;padding:2px 8px;border-radius:6px}
+.tot{display:flex;justify-content:space-between;align-items:center}
+.tot span:first-child{font-weight:500;font-size:16px}
+.tot .amt{background:var(--li);color:var(--ink);padding:2px 10px;font-size:28px}
+.empty{color:var(--mb);padding:16px 0;text-align:center}
+.ctc{text-align:center;font-size:12px;color:var(--mb);margin:16px 0 0}
+.acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.acts .btn{flex:1 1 30%}.acts .wa{flex:1 1 100%}
+.fine{color:var(--mi);font-size:13px;margin:12px 0 4px}
+@media (prefers-reduced-motion:no-preference){.step button,.tabs button{transition:background .15s}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Lewati ke konten</a>
+<header class="top">
+<div class="brand"><svg viewBox="380 260 500 690" aria-hidden="true"><polygon points="735,266 869,318 520,667 388,622"/><polygon points="735,546 866,594 521,942 387,894"/></svg>Swipi Ventures</div>
+<span class="yr">Rate Card 2026</span>
+</header>
+<main id="main">
+<h1>Pilih layanan, lihat totalnya</h1>
+<p class="lead">Atur jumlah langsung di struk. Total terhitung otomatis.</p>
+<div class="tabs" role="tablist" aria-label="Jenis layanan">
+<button role="tab" id="t-svc" aria-selected="true" aria-controls="p-svc" data-tab="svc">Layanan <span class="n" id="n-svc" hidden></span></button>
+<button role="tab" id="t-pkg" aria-selected="false" aria-controls="p-pkg" data-tab="pkg">Paket <span class="n" id="n-pkg" hidden></span></button>
+<button role="tab" id="t-aca" aria-selected="false" aria-controls="p-aca" data-tab="aca">Akademik <span class="n" id="n-aca" hidden></span></button>
+</div>
+<article class="paper" aria-label="Struk daftar harga">
+<div class="ph"><svg viewBox="380 260 500 690" aria-hidden="true"><polygon points="735,266 869,318 520,667 388,622"/><polygon points="735,546 866,594 521,942 387,894"/></svg><div class="pn">Swipi Ventures</div><div class="pd">Daftar harga <span class="dt"></span></div></div>
+<div class="dash"></div>
+<div role="tabpanel" id="p-svc" aria-labelledby="t-svc"></div>
+<div role="tabpanel" id="p-pkg" aria-labelledby="t-pkg" hidden>
+<section class="grp">
+<h2>Paket bulanan</h2>
+<p class="note">Pilih satu paket, lalu atur lama berlangganan.</p>
+<div id="pkgs"></div>
+<div id="mrow" hidden>
+<div class="row"><div><div class="nm">Lama paket</div><div class="pr" id="mtxt"></div></div><div id="mstep"></div></div>
+<button class="txt" type="button" id="unpk">Lepas paket</button>
+</div>
+<p class="note">Biaya iklan dibayar terpisah oleh klien.</p>
+</section>
+</div>
+<div role="tabpanel" id="p-aca" aria-labelledby="t-aca" hidden>
+<section class="grp">
+<h2>Academic Data</h2>
+<p class="note">Data riset dari sumber publik. Hasil dalam Excel atau CSV.</p>
+<div class="f">
+<div><label for="rows">Jumlah baris</label><input id="rows" type="number" inputmode="numeric" min="0" placeholder="120"></div>
+<div><label for="cols">Kolom numerik</label><input id="cols" type="number" inputmode="numeric" min="0" placeholder="8"></div>
+</div>
+<p class="hint">Kolom nomor, nama, kode, tanggal, dan identitas tidak dihitung.</p>
+<p class="err" id="aerr" role="alert" hidden>Isi dengan bilangan bulat, nol atau lebih.</p>
+<div class="res" aria-live="polite"><div><span class="big" id="dp">0</span> data points</div><p id="dpp">Isi baris dan kolom untuk melihat harga.</p></div>
+</section>
+<section class="grp">
+<h2>Tabel harga</h2>
+<ul class="tiers" id="tiers"></ul>
+<details><summary>Ketentuan perhitungan</summary><ul>
+<li>Data points = jumlah baris × jumlah kolom numerik penelitian.</li>
+<li>Data cleaning dan processing dasar sudah termasuk.</li>
+<li>Berlaku untuk sumber publik yang kompatibel dengan sistem scraping.</li>
+<li>Custom scraping, analisis statistik, dan pengerjaan SPSS tidak termasuk.</li>
+</ul></details>
+</section>
+</div>
+<div class="dash"></div>
+<p class="thx">Free Revisi satu kali setiap item</p>
+<div class="bc" aria-hidden="true"></div>
+</article>
+</main>
+
+<div class="bar"><div>
+<div><span class="lbl">Total quotation</span><span class="amt" id="total">Rp0</span></div>
+<button class="btn" type="button" id="open">Lihat struk</button>
+</div></div>
+
+<dialog id="sheet" aria-labelledby="sh-t"><div class="dh"><b id="sh-t">Struk penawaran</b><button class="btn g" type="button" id="close">Tutup</button></div>
+<div class="paper">
+<div class="ph"><svg viewBox="380 260 500 690" aria-hidden="true"><polygon points="735,266 869,318 520,667 388,622"/><polygon points="735,546 866,594 521,942 387,894"/></svg><div class="pn">Swipi Ventures</div><div class="pd">Penawaran <span class="dt"></span></div></div>
+<label for="client" class="lb">Nama atau bisnis Anda (opsional)</label>
+<input class="nmi" id="client" type="text" autocomplete="off" placeholder="Kopi Gayo Surabaya">
+<div class="dash"></div>
+<div id="lines"></div>
+<div class="dash"></div>
+<div class="tot"><span>TOTAL</span><span class="amt" id="total2">Rp0</span></div>
+<p class="ctc">WhatsApp 0856-7876-751<br>Instagram @swipiventures<br>swipiventures@gmail.com</p>
+<div class="bc" aria-hidden="true"></div>
+</div>
+<div class="acts"><a class="btn l wa" id="wa" target="_blank" rel="noopener">Kirim ke WhatsApp Swipi</a><button class="btn g" type="button" id="png">Simpan PNG</button><button class="btn g" type="button" id="pdf">Simpan PDF</button><button class="btn g" type="button" id="copy">Salin teks</button><button class="btn c" type="button" id="reset">Kosongkan</button></div>
+<p class="fine" id="stat" aria-live="polite">Free Revisi satu kali setiap item</p>
+</dialog>
+
+<script>
+const fmt=n=>"Rp"+String(n).replace(/\B(?=(\d{3})+(?!\d))/g,".");
+const $=id=>document.getElementById(id);
+const fmtD=()=>new Date().toLocaleDateString("id-ID",{day:"numeric",month:"long",year:"numeric"});
+document.querySelectorAll(".dt").forEach(e=>e.textContent=fmtD());
+const S=[
+["Strategi dan perencanaan",[["ig-plan","Content plan Instagram",150000,"per plan"],["th-plan","Content plan Threads",100000,"per plan"]]],
+["Produksi konten",[["ig-post","Instagram static post",50000,"per post"],["ig-car","Instagram carousel, maks. 7 slide",85000,"per carousel"],["cc15","Reels template CapCut, 15 sampai 30 detik",50000,"per video"],["cc30","Reels template CapCut, 30 sampai 60 detik",75000,"per video"],["ai15","Reels AI, 15 sampai 30 detik",175000,"per video"],["ai30","Reels AI, 30 sampai 60 detik",250000,"per video"],["th-post","Threads post",35000,"per post"],["seo5","Artikel SEO, 500 sampai 800 kata",125000,"per artikel"],["seo8","Artikel SEO, 800 sampai 1.200 kata",175000,"per artikel"]]],
+["Iklan digital",[["meta","Meta Ads, setup dan manajemen",500000,"per bulan"],["gads","Google Ads, setup dan manajemen",550000,"per bulan"]],"Jumlah mengikuti lama bulan. Biaya iklan dibayar terpisah."],
+["Website dan laporan",[["web","Update proyek website",25000,"per update"],["rep","Laporan performa",150000,"per laporan"]]],
+["Add-on",[["rev","Revisi tambahan",15000,"per revisi"]],"Free revisi satu kali setiap item. Revisi berikutnya Rp15.000."]];
+const P=[{id:"p1",n:"Social Media Growth",p:1500000,i:["1 content plan Instagram","10 Reels template CapCut","5 carousel Instagram (maks. 7 slide)","1 manajemen Meta Ads","15 update proyek website","1 laporan performa"]},
+{id:"p2",n:"Multi-Channel Growth",p:1800000,i:["1 content plan Instagram","1 content plan Threads","6 Instagram post","6 Threads post","6 artikel SEO","1 manajemen Meta Ads","1 manajemen Google Ads","1 laporan performa"]}];
+const T=[[500,50000,"1 sampai 500"],[1000,75000,"501 sampai 1.000"],[2000,100000,"1.001 sampai 2.000"],[3000,150000,"2.001 sampai 3.000"],[5000,200000,"3.001 sampai 5.000"],[10000,300000,"5.001 sampai 10.000"]];
+let q={},pkg=null,months=1,rows=0,cols=0;
+const step=(id,n)=>`<div class="step" role="group" aria-label="Jumlah ${n}"><button type="button" data-id="${id}" data-d="-1" aria-label="Kurangi ${n}">−</button><output id="q-${id}">${id==="months"?1:0}</output><button type="button" data-id="${id}" data-d="1" aria-label="Tambah ${n}">+</button></div>`;
+$("p-svc").innerHTML=S.map(([g,its,note])=>`<section class="grp"><h2>${g}</h2>${note?`<p class="note">${note}</p>`:""}${its.map(([id,n,p,u])=>`<div class="row" id="r-${id}"><div><div class="nm">${n}</div><div class="pr" id="s-${id}">${fmt(p)} ${u}</div></div>${step(id,n)}</div>`).join("")}</section>`).join("");
+$("pkgs").innerHTML=P.map(k=>`<div class="pk" id="k-${k.id}"><label><input type="radio" name="pkg" value="${k.id}"><span><span class="t">${k.n}</span><span class="pp">${fmt(k.p)} per bulan</span></span></label><details><summary>Isi paket</summary><ul>${k.i.map(x=>`<li>${x}</li>`).join("")}</ul></details></div>`).join("");
+$("mstep").innerHTML=step("months","lama paket");
+$("tiers").innerHTML=T.map((t,i)=>`<li id="tr${i}"><span>${t[2]}</span><span>${fmt(t[1])}</span></li>`).join("")+`<li id="tr6"><span>Di atas 10.000</span><span>Custom</span></li>`;
+const tier=dp=>dp<=0?-1:dp>10000?6:T.findIndex(t=>dp<=t[0]);
+function lines(){const L=[];
+S.forEach(([,its])=>its.forEach(([id,n,p,u])=>{if(q[id])L.push({tab:"svc",n,qty:q[id],p,u,sub:q[id]*p})}));
+if(pkg){const k=P.find(x=>x.id===pkg);L.push({tab:"pkg",n:"Paket "+k.n,qty:months,p:k.p,u:"bulan",sub:months*k.p})}
+const dp=rows*cols;if(dp>0){const t=tier(dp);L.push({tab:"aca",n:"Academic Data Collection, "+fmt(dp).slice(2)+" data points",qty:1,p:t===6?null:T[t][1],u:"paket",sub:t===6?0:T[t][1],custom:t===6})}
+return L}
+function update(){
+S.forEach(([,its])=>its.forEach(([id,n,p,u])=>{const c=q[id]||0;$("q-"+id).textContent=c;$("s-"+id).innerHTML=c?`${c} × ${fmt(p)} = <b>${fmt(p*c)}</b>`:`${fmt(p)} ${u}`}));
+P.forEach(k=>{$("k-"+k.id).classList.toggle("on",pkg===k.id);document.querySelector(`input[value=${k.id}]`).checked=pkg===k.id});
+$("mrow").hidden=!pkg;$("q-months").textContent=months;
+if(pkg){const k=P.find(x=>x.id===pkg);$("mtxt").innerHTML=`${months} × ${fmt(k.p)} = <b>${fmt(k.p*months)}</b>`}
+const dp=rows*cols,t=tier(dp);
+$("dp").textContent=fmt(dp).slice(2);
+$("dpp").innerHTML=dp<=0?"Isi baris dan kolom untuk melihat harga.":t===6?"Di atas 10.000 data points. <b>Harga custom</b>, hubungi Swipi Ventures.":`Harga final <b>${fmt(T[t][1])}</b>, masuk ke struk.`;
+for(let i=0;i<7;i++)$("tr"+i).classList.toggle("act",i===t);
+const L=lines(),tot=L.reduce((a,l)=>a+l.sub,0),cu=L.some(l=>l.custom);
+const ts=fmt(tot)+(cu?" + custom":"");$("total").textContent=ts;$("total2").textContent=ts;
+["svc","pkg","aca"].forEach(k=>{const c=L.filter(l=>l.tab===k).length,e=$("n-"+k);e.hidden=!c;e.textContent=c})}
+document.addEventListener("click",e=>{const b=e.target.closest("[data-id]");if(!b)return;const id=b.dataset.id,d=+b.dataset.d;
+if(id==="months")months=Math.min(24,Math.max(1,months+d));else q[id]=Math.min(99,Math.max(0,(q[id]||0)+d));update()});
+document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>{document.querySelectorAll(".tabs button").forEach(x=>{const on=x===b;x.setAttribute("aria-selected",on);$("p-"+x.dataset.tab).hidden=!on})});
+document.querySelectorAll("input[name=pkg]").forEach(r=>r.onchange=()=>{pkg=r.value;update()});
+$("unpk").onclick=()=>{pkg=null;months=1;update()};
+["rows","cols"].forEach(id=>$(id).addEventListener("input",()=>{const v=$("rows").value,w=$("cols").value;
+const bad=[v,w].some(x=>x!==""&&(!(+x>=0)||!Number.isInteger(+x)));$("aerr").hidden=!bad;
+rows=bad?0:Math.floor(+v||0);cols=bad?0:Math.floor(+w||0);update()}));
+const sh=$("sheet");
+function sheet(){const L=lines();
+$("lines").innerHTML=L.length?L.map(l=>`<div class="ln"><div>${l.n}<small>${l.custom?"Harga dikonfirmasi tim Swipi":`${l.qty} × ${fmt(l.p)} (${l.u})`}</small></div><span>${l.custom?'<i class="tg">Custom</i>':fmt(l.sub)}</span></div>`).join(""):`<p class="empty">Struk masih kosong. Tutup, lalu tekan + pada layanan yang Anda mau.</p>`;
+["copy","reset","png","pdf"].forEach(k=>$(k).disabled=!L.length);waSync();$("reset").textContent="Kosongkan"}
+$("open").onclick=()=>{sheet();sh.showModal()};
+$("close").onclick=()=>sh.close();
+sh.addEventListener("click",e=>{if(e.target===sh)sh.close()});
+let armed=false;
+$("reset").onclick=()=>{if(!armed){armed=true;$("reset").textContent="Yakin kosongkan?";setTimeout(()=>{armed=false;$("reset").textContent="Kosongkan"},3000);return}
+armed=false;q={};pkg=null;months=1;rows=0;cols=0;$("rows").value="";$("cols").value="";update();sheet();$("stat").textContent="Semua item dikosongkan."};
+function qtext(head){const L=lines(),tot=L.reduce((a,l)=>a+l.sub,0),cu=L.some(l=>l.custom);
+return head+L.map(l=>l.custom?`- ${l.n}: harga custom`:`- ${l.n}: ${fmt(l.p)} × ${l.qty} = ${fmt(l.sub)}`).join("\n")+`\n\nTotal: ${fmt(tot)}${cu?" + item custom":""}`}
+$("copy").onclick=async()=>{const c=$("client").value.trim();
+const tx=qtext(`QUOTATION SWIPI VENTURES\n${c?"Klien: "+c+"\n":""}Tanggal: ${fmtD()}\n\n`)+"\n\nFree Revisi satu kali setiap item";
+const ok="Teks tersalin, siap ditempel ke WhatsApp atau email.";
+try{await navigator.clipboard.writeText(tx);$("stat").textContent=ok}
+catch(_){const a=document.createElement("textarea");a.value=tx;document.body.appendChild(a);a.select();let r=false;try{r=document.execCommand("copy")}catch(_){}a.remove();$("stat").textContent=r?ok:"Gagal menyalin otomatis. Salin dari struk di atas."}};
+function waSync(){const L=lines(),a=$("wa");if(!L.length){a.removeAttribute("href");a.setAttribute("aria-disabled","true");return}
+const c=$("client").value.trim();
+a.href="https://wa.me/628567876751?text="+encodeURIComponent(qtext(`Halo Swipi Ventures, saya ${c?c+", ":""}ingin meminta penawaran berikut:\n\n`)+"\n\nTerima kasih.");a.removeAttribute("aria-disabled")}
+$("client").addEventListener("input",waSync);
+$("wa").addEventListener("click",e=>{if($("wa").getAttribute("aria-disabled")==="true")e.preventDefault()});
+const wrapT=(x,t,mw)=>{const o=[];let c="";t.split(" ").forEach(s=>{const n=c?c+" "+s:s;if(x.measureText(n).width>mw&&c){o.push(c);c=s}else c=n});if(c)o.push(c);return o};
+async function draw(){
+try{await Promise.all([document.fonts.load('700 40px "Bricolage Grotesque"'),document.fonts.load('400 20px "DM Mono"'),document.fonts.load('500 20px "DM Mono"')])}catch(_){}
+const L=lines(),W=900,PX=50,M=100,c=document.createElement("canvas"),x=c.getContext("2d");
+const INK="#344C4B",BONE="#FFFFFF",PG="#344C4B",VI="#E5765C",LI="#8CBEBF",CO="#344C4B",MB="#566968",RL="#C8D0CF";
+const Fm=(w,s)=>`${w} ${s}px "DM Mono", ui-monospace, monospace`,Fh=s=>`700 ${s}px "Bricolage Grotesque", Figtree, sans-serif`;
+x.font=Fm(500,26);const R=L.map(l=>({l,n:wrapT(x,l.n,440)}));
+const S2=R.reduce((a,r)=>a+r.n.length*36+64,0),H=1060+S2,B=H-PX;
+c.width=W;c.height=H;x.fillStyle=PG;x.fillRect(0,0,W,H);
+x.fillStyle=BONE;x.beginPath();const tw=(W-2*PX)/32;x.moveTo(PX,PX+12);
+for(let i=0;i<32;i++){x.lineTo(PX+i*tw+tw/2,PX);x.lineTo(PX+(i+1)*tw,PX+12)}
+x.lineTo(W-PX,B-12);for(let i=32;i>0;i--){x.lineTo(PX+i*tw-tw/2,B);x.lineTo(PX+(i-1)*tw,B-12)}x.closePath();x.fill();
+x.fillStyle=VI;x.fillRect(PX,PX+12,W-2*PX,12);
+x.save();x.translate(W/2-25,100);x.scale(.1,.1);x.translate(-380,-260);x.fillStyle=INK;
+[[735,266,869,318,520,667,388,622],[735,546,866,594,521,942,387,894]].forEach(p=>{x.beginPath();x.moveTo(p[0],p[1]);x.lineTo(p[2],p[3]);x.lineTo(p[4],p[5]);x.lineTo(p[6],p[7]);x.closePath();x.fill()});x.restore();
+x.textAlign="center";x.fillStyle=INK;x.font=Fh(46);x.fillText("Swipi Ventures",W/2,235);
+x.fillStyle=MB;x.font=Fm(400,24);x.fillText("Struk penawaran",W/2,275);
+const dash=(y)=>{x.save();x.strokeStyle=RL;x.lineWidth=3;x.setLineDash([12,9]);x.beginPath();x.moveTo(M,y);x.lineTo(W-M,y);x.stroke();x.restore()};
+dash(312);x.textAlign="left";x.font=Fm(400,24);x.fillStyle=MB;x.fillText("Untuk",M,362);x.fillText("Tanggal",M,404);
+x.textAlign="right";x.fillStyle=INK;x.font=Fm(500,26);x.fillText($("client").value.trim()||"Calon klien",W-M,362);x.fillText(fmtD(),W-M,404);
+dash(438);let y=462;
+R.forEach(r=>{const l=r.l,nl=r.n.length;x.textAlign="left";x.fillStyle=INK;x.font=Fm(500,26);r.n.forEach((t,i)=>x.fillText(t,M,y+26+i*36));
+x.fillStyle=MB;x.font=Fm(400,22);x.fillText(l.custom?"Harga dikonfirmasi tim Swipi":`${l.qty} × ${fmt(l.p)} (${l.u})`,M,y+26+(nl-1)*36+32);
+x.textAlign="right";
+if(l.custom){x.font=Fm(500,22);const w=x.measureText("Custom").width;x.fillStyle=CO;x.fillRect(W-M-w-24,y+1,w+24,36);x.fillStyle=BONE;x.fillText("Custom",W-M-12,y+27)}
+else{x.fillStyle=INK;x.font=Fm(500,26);x.fillText(fmt(l.sub),W-M,y+26)}
+const h=nl*36+64;dash(y+h-12);y+=h});
+const tot=L.reduce((a,l)=>a+l.sub,0);y+=28;
+x.textAlign="left";x.fillStyle=INK;x.font=Fm(500,30);x.fillText("TOTAL",M,y+50);
+x.font=Fh(54);const aw=x.measureText(fmt(tot)).width;x.fillStyle=LI;x.fillRect(W-M-aw-20,y+4,aw+20,68);
+x.fillStyle=INK;x.textAlign="right";x.fillText(fmt(tot),W-M-10,y+56);
+if(L.some(l=>l.custom)){x.fillStyle=MB;x.font=Fm(400,22);x.fillText("+ item dengan harga custom",W-M,y+104)}
+dash(y+128);x.textAlign="center";x.fillStyle=MB;x.font=Fm(400,22);
+wrapT(x,"Free Revisi satu kali setiap item",W-2*M).forEach((t,i)=>x.fillText(t,W/2,y+170+i*32));
+x.fillStyle=INK;x.font=Fh(32);x.fillText("Terima kasih",W/2,y+270);
+x.fillStyle=MB;x.font=Fm(400,22);["WhatsApp 0856-7876-751","Instagram @swipiventures","swipiventures@gmail.com"].forEach((t,i)=>x.fillText(t,W/2,y+312+i*34));
+x.fillStyle=INK;let bx=W/2-250;[2,1,3,1,2,4,1,2,1,3,2,1,4,1,2,3,1,2,1,4,2,1,3,1,2].forEach((w,i)=>{if(i%2===0)x.fillRect(bx,y+420,w*3,60);bx+=w*3+(i%2?0:3)+6});
+return c}
+function pdfOf(jpg,cw,ch){const enc=new TextEncoder(),parts=[],off=[];let len=0;
+const add=b=>{if(typeof b==="string")b=enc.encode(b);parts.push(b);len+=b.length};
+const Wp=595,Hp=Math.round(595*ch/cw);add("%PDF-1.4\n");
+const obj=(n,b)=>{off[n]=len;add(`${n} 0 obj\n${b}\nendobj\n`)};
+obj(1,"<< /Type /Catalog /Pages 2 0 R >>");obj(2,"<< /Type /Pages /Kids [3 0 R] /Count 1 >>");
+obj(3,`<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${Wp} ${Hp}] /Resources << /XObject << /Im0 5 0 R >> >> /Contents 4 0 R >>`);
+const cs=`q ${Wp} 0 0 ${Hp} 0 0 cm /Im0 Do Q`;obj(4,`<< /Length ${cs.length} >>\nstream\n${cs}\nendstream`);
+off[5]=len;add(`5 0 obj\n<< /Type /XObject /Subtype /Image /Width ${cw} /Height ${ch} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${jpg.length} >>\nstream\n`);add(jpg);add("\nendstream\nendobj\n");
+const xr=len;add("xref\n0 6\n0000000000 65535 f \n");for(let i=1;i<=5;i++)add(String(off[i]).padStart(10,"0")+" 00000 n \n");
+add(`trailer\n<< /Size 6 /Root 1 0 R >>\nstartxref\n${xr}\n%%EOF`);return new Blob(parts,{type:"application/pdf"})}
+let dl=null;
+const noDl=()=>{$("png").hidden=true;$("pdf").hidden=true};
+try{window.claude&&window.claude.use("downloads").then(d=>{dl=d;if(!d)noDl()}).catch(noDl)}catch(_){noDl()}
+async function exp(kind){if(!dl){$("stat").textContent="Penyimpanan file hanya tersedia saat halaman dibuka lewat claude.ai.";return}
+$("stat").textContent="Menyiapkan file...";
+try{const c=await draw();
+if(kind==="png"){const b=await new Promise(r=>c.toBlob(r,"image/png"));await dl.save({filename:"quotation-swipi-ventures.png",data:b})}
+else{const jb=await new Promise(r=>c.toBlob(r,"image/jpeg",.92));const jpg=new Uint8Array(await jb.arrayBuffer());await dl.save({filename:"quotation-swipi-ventures.pdf",data:pdfOf(jpg,c.width,c.height)})}
+$("stat").textContent="File tersimpan."}
+catch(e){$("stat").textContent=e&&e.code==="declined"?"Penyimpanan dibatalkan.":"Gagal membuat file. Coba lagi."}}
+$("png").onclick=()=>exp("png");$("pdf").onclick=()=>exp("pdf");
+update();
+</script>
+</body>
+</html>
